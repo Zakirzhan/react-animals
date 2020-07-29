@@ -8,7 +8,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
- 
+
 
 function RandomCatFact(props) {
   const [catFact, setCatFact] = React.useState(null);

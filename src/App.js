@@ -4,6 +4,7 @@ import { Router } from "@reach/router";
 import Header from "./Header/Header";
 import HomePage from "./HomePage";
 import RandomCatImage from "./Cats/RandomCatImage";
+import CatBreeds from "./Cats/CatBreeds";
 import RandomCatFacts from "./Cats/RandomCatFact";
 import RandomDogImage from "./Dogs/RandomDogImage";
 import "./App.css";
@@ -41,6 +42,7 @@ function App() {
         <RandomCatImage path="/randomCat" timer={myTimer} />
         <RandomDogImage path="/randomDog" timer={myTimer} />
         <RandomCatFacts path="/catFacts" timer={myTimer} />
+        <CatBreeds path="/catBreeds" />
       </Router>
     </MainContainer>
   );
