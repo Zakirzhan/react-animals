@@ -7,8 +7,14 @@ const MainContainer = styled.div`
   flex-direction: column;
 `;
 
+const CatDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Image = styled.img`
   width: 100%;
+  margin:10px;
 `;
 
  
@@ -16,6 +22,7 @@ const Image = styled.img`
 function CatBreeds(props) {
     const [catBreedsArray, setCatBreedsArray] = React.useState(null);
     const [catImage, setCatImage] = React.useState(null);
+    const [catDescription, setCatDesc] = React.useState(null);
 
     
     const getBreeds = () => { 
@@ -27,16 +34,18 @@ function CatBreeds(props) {
     }
 
 
-    const getCatImageByBreed = () => { 
-        axios.get(`https://api.thecatapi.com/v1/images/search`)
+    const getCatImageByBreed = (catBreedId) => { 
+        axios.get('https://api.thecatapi.com/v1/images/search?breed_ids='+encodeURI(catBreedId))
         .then(res => {
-            let image = res.data[0]['url'];
-            setCatImage(image);
-          })
+            let cat = res.data[0];
+            setCatImage(cat['url']);
+            setCatDesc(cat['breeds'][0]);
+            // console.log(cat['breeds'][0]);
+        })
     }
     
-    const selectBreed = () => {
-        getCatImageByBreed();
+    const selectBreed = (catBreedId) => {
+        getCatImageByBreed(catBreedId);
     }
 
     React.useEffect(() => {
@@ -47,9 +56,10 @@ function CatBreeds(props) {
 
   return (
     <MainContainer> 
-     <select  onChange={selectBreed}> {catBreedsArray.map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}</select>
-
-      <Image src={catImage} />
+     <select  onChange={(event) => selectBreed(event.target.value)}> {catBreedsArray.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
+     <h1>{catDescription ? catDescription['name'] : ''}</h1>
+     <CatDescription>{catDescription ? catDescription['description'] : ''}</CatDescription>
+    <Image src={catImage} />
 
     </MainContainer>
   );
