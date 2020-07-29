@@ -17,14 +17,30 @@ const MainContainer = styled.div`
 `;
 
 function App() {
+  const [myTimer, setMyTimer] = React.useState(0);
+  const updateTime = 30;
+
+
+  const timerFunc = () => {
+    myTimer > 0 && setTimeout(() => setMyTimer(myTimer - 1), 1000);
+    if(myTimer===0) {
+       
+      setMyTimer(updateTime);
+    }
+  };
+
+    React.useEffect(() => {
+      timerFunc();
+  }, [myTimer]);
+
   return (
     <MainContainer>
       <Header />
       <Router>
         <HomePage path="/" />
-        <RandomCatImage path="/randomCat" />
-        <RandomDogImage path="/randomDog" />
-        <RandomCatFacts path="/catFacts" />
+        <RandomCatImage path="/randomCat" timer={myTimer} />
+        <RandomDogImage path="/randomDog" timer={myTimer} />
+        <RandomCatFacts path="/catFacts" timer={myTimer} />
       </Router>
     </MainContainer>
   );
