@@ -12,10 +12,11 @@ const Image = styled.img`
 
 // https://docs.thecatapi.com/
 
-function RandomCatImage(props) {
+function RandomCatImage() {
   const [catImageUrl, setCatImageUrl] = React.useState(null);
-
-  React.useEffect(() => {
+  const [myTimer, setMyTimer] = React.useState(0);
+  const updateTime = 30;
+ const generateImage = () => {
     fetch("https://api.thecatapi.com/v1/images/search")
       .then((response) => {
         return response.json();
@@ -23,13 +24,25 @@ function RandomCatImage(props) {
       .then((data) => {
         setCatImageUrl(data[0].url);
       });
-  }, []);
+  }
+
+  React.useEffect(() => {
+    myTimer > 0 && setTimeout(() => setMyTimer(myTimer - 1), 1000);
+    if(myTimer===0) {
+      
+      generateImage()
+      
+      setMyTimer(updateTime);
+    }
+  },[myTimer]);
 
   if (catImageUrl == null) return <div> Loading </div>;
+
 
   return (
     <MainContainer>
       <Image src={catImageUrl} />
+      <div>New cat image will appear in {myTimer} seconds</div>
     </MainContainer>
   );
 }
